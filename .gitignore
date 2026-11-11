@@ -1,0 +1,14 @@
+.work/
+data/raw/
+data/cache/
+data/private_helpers/
+results/generated/*
+!results/generated/README.md
+.Rhistory
+.RData
+.Ruserdata
+*.Rout
+*.log
+.Renviron
+renv/library/
+renv/staging/

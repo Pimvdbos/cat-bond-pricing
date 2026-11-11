@@ -1,0 +1,7 @@
+parameter,value,unit,motivation_report_summary
+face_value,1000,USD,Round denomination
+initial_index,100,ACE index,Consistent with recent levels in report Figure 1
+threshold,200,ACE index,Tail-risk threshold with initial_index/threshold=0.50
+maturity,1,year,One hurricane season
+loss_fraction,1.0,fraction,Full principal at risk
+risk_free_rate,0.03,annual continuously compounded rate,Specified in assignment

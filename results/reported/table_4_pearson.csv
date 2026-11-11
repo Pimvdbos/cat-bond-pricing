@@ -1,0 +1,7 @@
+statistic,value
+correlation,0.0514
+t_statistic,0.4336
+degrees_of_freedom,71
+p_value,0.6659
+ci_lower,-0.1808
+ci_upper,0.2782

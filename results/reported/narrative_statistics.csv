@@ -1,0 +1,7 @@
+report_section,statistic,value
+3,optimum_log_likelihood_approx,-208.94
+6,paired_observations,73
+6,first_comparison_year,1950
+6,last_comparison_year,2022
+7,spearman_correlation,0.0867
+7,spearman_p_value,0.4660

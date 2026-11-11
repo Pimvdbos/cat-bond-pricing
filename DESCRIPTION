@@ -1,0 +1,11 @@
+Package: catbondresearch
+Type: Project
+Title: Catastrophe Bond Pricing with Jump-Diffusion and Monte Carlo Simulation
+Version: 1.0.0
+Authors@R: person("Pim", "van den Bos", role = "aut")
+Description: Academic ACE-linked catastrophe bond research reconstructed from a report.
+    Base R pricing, reported-result figures, and optional historical-data workflows.
+Depends: R (>= 4.1.0)
+Suggests: quantmod, xts, zoo, digest, maxLik, foreach, doParallel
+License: file RIGHTS.md
+Encoding: UTF-8
