@@ -4,6 +4,12 @@ data/cache/
 data/private_helpers/
 results/generated/*
 !results/generated/README.md
+!results/generated/reproduction-2026-11-12/
+!results/generated/reproduction-2026-11-12/**
+!results/generated/investigation-2026-11-12/
+!results/generated/investigation-2026-11-12/**
+!results/generated/continuous-benchmark-2026-11-12/
+!results/generated/continuous-benchmark-2026-11-12/**
 .Rhistory
 .RData
 .Ruserdata

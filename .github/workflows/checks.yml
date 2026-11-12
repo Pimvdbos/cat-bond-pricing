@@ -16,5 +16,7 @@ jobs:
           use-public-rspm: true
       - name: Offline artificial-fixture tests
         run: Rscript --vanilla tests/run_tests.R
+      - name: Recovered teaching-code equivalence
+        run: Rscript --vanilla tests/recovery_tests.R
       - name: Regenerate report-based figures
         run: Rscript --vanilla scripts/figures.R

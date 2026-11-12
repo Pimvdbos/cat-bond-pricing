@@ -1,3 +1,7 @@
+# Current update: 12 November 2026
+
+Recovered original helpers now restore the complete ACE MLE workflow. Full table reproduction and independent variance-reduction experiments have been run; see [reproduction.md](reproduction.md) and the committed generated snapshots. No required estimation dependency remains missing. The material below records the **historical initial-publication status on 11 November**, including limitations since resolved.
+
 # Execution status
 
 Publication preparation: **11 November 2026**. Checks below assess software behavior and packaging, not the validity of the supplied research findings.

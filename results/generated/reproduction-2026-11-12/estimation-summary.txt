@@ -1,0 +1,16 @@
+--------------------------------------------
+Maximum Likelihood estimation
+BHHH maximisation, 17 iterations
+Return code 8: successive function values within relative tolerance limit (reltol)
+Log-Likelihood: -208.9359
+5  free parameters
+Estimates:
+         Estimate Std. error t value Pr(> t)
+mu        0.19647    0.09376   2.095  0.0361 *
+sigma     0.66052    0.07568   8.728  <2e-16 ***
+delta     1.55250    0.88921   1.746  0.0808 .
+lambda.p  0.13505    0.14162   0.954  0.3403
+kv        0.20129    0.45416   0.443  0.6576
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------

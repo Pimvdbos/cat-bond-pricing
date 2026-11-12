@@ -1,0 +1,3 @@
+Published snapshot: 2026-11-12
+Execution directory: 20261112T125729-reproduction-79943ab7bfd
+Only aggregate results, configurations and session/provenance records are included.

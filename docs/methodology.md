@@ -1,6 +1,6 @@
 # Methodology
 
-This document explains the implementation in the [source report](../reports/Pricing_CAT_Bond.pdf). Tables and research findings are transcribed, not recalibrated. The project studies a hypothetical parametric catastrophe bond and does not value a traded security.
+This document explains the implementation in the [source report](../reports/Pricing_CAT_Bond.pdf). Reported tables remain transcribed and unchanged. A separate [reproduction and estimator investigation](reproduction.md) now evaluates fresh results; the pricing inputs are not recalibrated. The project studies a hypothetical parametric catastrophe bond and does not value a traded security.
 
 ## Insurance and physical-risk context
 
@@ -30,7 +30,16 @@ kv_hat = mean(Rjumps) - (mu_hat - sigma_hat^2/2)*delta.t
 
 Here N is the number of annual returns (distinct from pricing N, the number of time steps). The threshold-based initial frequency is not the final MLE intensity. The report gives final estimates `(mu, sigma, delta, lambda.p, kv) = (0.196, 0.660, 1.550, 0.135, 0.202)` and approximate optimum log-likelihood -208.94. `kv` is a **mean log-jump size**, not the mean relative jump.
 
-The estimation workflow retains `maxLik(LL, method="BHHH", control=list(iterlim=1000))`, plus ten random starting points formed by multiplying the initial vector by `runif(5, 0.5, 1.5)` after `set.seed(123)`. The report supplies ten equal rounded log-likelihoods; they remain in Table 3. No optimization was rerun for publication. Because `functions.R` and `LL.R` are unavailable, the original likelihood's definition cannot be documented as recovered. No substitute likelihood is supplied. The optional runner requires the actual helpers and their interface must be checked when recovered.
+The estimation workflow retains `maxLik(LL, method="BHHH", control=list(iterlim=1000))`, plus ten random starting points formed by multiplying the initial vector by `runif(5, 0.5, 1.5)` after `set.seed(123)`. The recovered [original LL.R](../original/teaching/LL.R) returns one log density per observation:
+
+```text
+f(return) = sum over k=0,...,50 of
+  Poisson(k; lambda.p * delta.t) *
+  NormalDensity(return; (mu - sigma^2/2)*delta.t + k*kv,
+                        sqrt(sigma^2*delta.t + k*delta^2))
+```
+
+The original helper is used unchanged. This is a truncated compound-Poisson/lognormal mixture, with no added jump compensator. The likelihood squares sigma and delta, so signs are not identified by the density alone; reported positive scales are used for pricing. Unconstrained optimization may propose a negative Poisson intensity and generate NaN warnings. These are counted by stage; the original routine and stopping criteria are retained. All ten restarts completed. Truncation and stopping-tolerance diagnostics are separate outputs, not replacement estimates. See the [reproduction](reproduction.md) for numerical comparisons.
 
 ## Bond and dynamics
 
@@ -95,4 +104,4 @@ All four price/spread outputs are retained. Spreads use `-log(price/F)/T-r`, a c
 
 The full grid is N = 100, 500, 1000 crossed with nsim = 3500, 5000, 6500 at lambda=0.05. Main scenarios use selected N=500, nsim=6500 and all three lambda values automatically. Portable PSOCK workers return results in path order; failed cluster creation falls back to serial with a warning, and worker cleanup is registered on exit.
 
-Transcribed [reported tables](../results/reported/) are immutable research records for this project. Fresh runs write separate local outputs with configurations, RNG/backend details and R session information. Software fixtures and small smoke runs establish executability, not full numerical reproduction or an independent audit of the research.
+Transcribed [reported tables](../results/reported/) are immutable research records for this project. Fresh runs write separate local outputs with configurations, RNG/backend details and R session information. Software fixtures establish executability. Full reproduction and independent estimator diagnostics are documented separately in [reproduction.md](reproduction.md); original reported results are not overwritten.

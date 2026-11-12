@@ -1,0 +1,3 @@
+Published snapshot: 2026-11-12
+Execution directory: 20261112T125411-investigation-5a444ced61a0
+Only aggregate results, configurations and session/provenance records are included.

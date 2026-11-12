@@ -6,12 +6,12 @@
 
 Academic modeling project based on [*Pricing of a CAT bond*, 30 March 2026](reports/Pricing_CAT_Bond.pdf). The bond is hypothetical: there are no observed CAT-bond quotes or commercial market calibration.
 
-[Research methodology](docs/methodology.md) · [Maintained R code](R/pricing.R) · [Code provenance](docs/code_provenance.md) · [Reported tables](results/reported/) · [Software checks](docs/execution_status.md)
+[Reproduction and estimator investigation](docs/reproduction.md) · [Research methodology](docs/methodology.md) · [Maintained R code](R/pricing.R) · [Code provenance](docs/code_provenance.md) · [Reported tables](results/reported/) · [Software checks](docs/execution_status.md)
 
 ## The project in one minute
 
 1. Study historical North Atlantic ACE and calculate annual log returns.
-2. Initialize and estimate a Poisson jump-diffusion model; examine epsilon and optimization starting points.
+2. Estimate a Poisson jump-diffusion model using the recovered original likelihood; examine epsilon and optimization starting points.
 3. Compare annual ACE and Yahoo S&P 500 adjusted-price log returns using Pearson and Spearman tests.
 4. Price a USD 1,000 bond whose principal is lost if the simulated ACE path reaches 200 within one year.
 5. Pair jump-diffusion and GBM paths, apply a GBM control variate, and study simulation precision and risk-adjustment scenarios.
@@ -89,20 +89,39 @@ Rscript --vanilla scripts/acquire_data.R ace
 Rscript --vanilla scripts/acquire_data.R sp500
 Rscript --vanilla scripts/analyze.R initial
 Rscript --vanilla scripts/analyze.R correlation
-# Optional: requires the missing original helpers, see below
+# Original likelihood with recovered helpers
 Rscript --vanilla scripts/analyze.R estimate
 ```
 
 Acquisition succeeded on **11 November 2026** for both sources. The recovered ACE file contains 172 levels in 1851-2022 and 171 annual log returns; the lost original file cannot be assumed identical. Yahoo adjusted prices cover 3 January 1950 to 30 December 2022, producing 73 annual returns under the original partial-first-year convention. See [data instructions, checksums and coverage](data/README.md) for caches, manual files and provenance. Raw downloads and market-data caches are excluded from Git.
 
-**Estimation limitation:** Appendix A references `functions.R` and `LL.R`, neither included in the report nor recovered from supplied files/public searches. Epsilon sensitivity and initial-value formulas work; the MLE command stops with a clear message until the original helpers are supplied. The preserved workflow uses `maxLik`, BHHH, iteration limit 1,000, and ten seed-123 perturbed starts. No inferred likelihood is presented as original code. **Pricing is independent of these helpers** and uses the reported fixed estimates.
+**Recovered original helpers:** `functions.R` and `LL.R` are now available in [original/teaching/](original/teaching/). The original Poisson-normal mixture likelihood is restored with annual ACE returns, `maxLik` BHHH, 1,000 iterations and ten seed-123 perturbed starts. No required dependency remains missing. Teaching example data and bond terms are not used; pricing keeps the report's fixed parameters.
+
+## Reproduction and independent investigation (12 November 2026)
+
+Tables **1, 3, 4, 5, 6 and 7** reproduce at their published numerical precision (Table 5 is the contract specification). Table **2** is close but not identical at the published rounding; all discrepancies are recorded, rather than adjusting the estimates to match. Both Pearson and Spearman narrative results reproduce. Original supplied findings remain untouched under `results/reported/`.
+
+The variance-reduction technique reduces sampling variance, but it also shifts the target because grid-monitored GBM payoffs are centered at a continuous-monitoring formula. A separate investigation measures this effect using repeated experiments, an exactly centered GBM bridge control and a continuous-PJD benchmark. See the [results and interpretation](docs/reproduction.md) before treating a narrower interval as evidence of a more accurate valuation.
+
+![Independent investigation of estimator targets and variance reduction](assets/figures/estimator_investigation.png)
+
+```sh
+Rscript --vanilla scripts/reproduce.R 2
+Rscript --vanilla scripts/compare_report.R
+Rscript --vanilla scripts/estimation_diagnostics.R
+Rscript --vanilla scripts/investigate.R 2 100 2000
+Rscript --vanilla scripts/continuous_benchmark.R 200000 2
+Rscript --vanilla tests/recovery_tests.R
+```
+
+Full runs create separate directories under `results/generated/`; curated publication snapshots and their configurations are committed there. Diagnostic estimators are clearly separated from the faithful report implementation.
 
 ## Navigate the repository
 
 | Location | Purpose |
 | --- | --- |
 | [reports/](reports/) | Unchanged 24-page source report |
-| [original/](original/) | Complete, minimally repaired PDF transcriptions of Appendices A-C |
+| [original/](original/) | PDF transcriptions of Appendices A-C plus recovered original teaching files |
 | [R/](R/) and [scripts/](scripts/) | Maintained functions and executable workflows |
 | [config/](config/) | Reported model/bond defaults and tested optional package versions |
 | [results/reported/](results/reported/) | Tables 1-7, narrative statistics, definitions and published rounding |
@@ -117,7 +136,7 @@ The modeled payoff is discounted terminal principal, monitored for a threshold b
 
 **Parametric basis risk:** basin-wide ACE and an insurer's actual insured losses need not coincide. A high ACE season may trigger principal loss with little damage to the insurer, while severe insured losses may occur without the ACE trigger.
 
-Local checks completed on R 4.5.3/Windows include syntax, clean sourcing, configuration, trigger equality, discounted/zero-loss payoffs, control-variate arithmetic, a small serial simulation and two-worker PSOCK equivalence. Data acquisition and sample loading were checked; the full research grid and parameter re-estimation were **not** run. Supplied numerical findings are presented as reported, not independently audited or claimed to be reproduced. See [execution details](docs/execution_status.md).
+Local software checks, recovered-code equivalence tests, full table reproduction and independent estimator experiments have been completed on R 4.5.3/Windows. Reproduction is not a claim of exact agreement in every table: Table 2 differs slightly. See [execution details](docs/execution_status.md) and the [investigation](docs/reproduction.md).
 
 ## Attribution and disclosure
 

@@ -1,0 +1,16 @@
+--------------------------------------------
+Maximum Likelihood estimation
+BHHH maximisation, 14 iterations
+Return code 2: successive function values within tolerance limit (tol)
+Log-Likelihood: -208.9359
+5  free parameters
+Estimates:
+         Estimate Std. error t value Pr(> t)
+mu        0.19639    0.09378   2.094  0.0362 *
+sigma     0.66046    0.07569   8.726  <2e-16 ***
+delta     1.55140    0.88717   1.749  0.0803 .
+lambda.p  0.13521    0.14175   0.954  0.3402
+kv        0.20159    0.45335   0.445  0.6566
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------

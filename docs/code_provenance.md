@@ -1,6 +1,6 @@
 # Code provenance and reconstruction log
 
-Source: Pim van den Bos, *Pricing of a CAT bond*, 30 March 2026, 24-page PDF. The unchanged report is in [reports/Pricing_CAT_Bond.pdf](../reports/Pricing_CAT_Bond.pdf). The original editable R source files were not supplied. Every file under `original/` is a **reconstructed transcription**, not a recovered original file.
+Source: Pim van den Bos, *Pricing of a CAT bond*, 30 March 2026, 24-page PDF. The unchanged report is in [reports/Pricing_CAT_Bond.pdf](../reports/Pricing_CAT_Bond.pdf). At initial publication the editable source files were not supplied. On 12 November 2026 the original teaching files were recovered; see [original/teaching/](../original/teaching/). The report-specific editable files remain unavailable. The three `original/appendix_*.R` files are **reconstructed transcriptions**; files in `original/teaching/` are actual recovered originals.
 
 ## Listing map
 
@@ -22,13 +22,17 @@ All numbered listing content, including the repeated pricing block and sensitivi
 
 The original comments about verifying a global maximum and closeness of prices are retained as archival text, not new repository verification claims. Likewise, the original B live-download end date and C manual scenario editing remain in the minimally repaired transcripts. Use maintained scripts for bounded data acquisition, automated scenarios and portable workers. A's original `results=list()` can behave poorly if failed runs leave missing trailing indices; maintained code preallocates ten restart records and captures failures.
 
-## Missing original dependencies
+## Recovered original dependencies (12 November 2026)
 
-Appendix A calls `source("functions.R")` and `source("LL.R")`. Neither appears in the PDF. A search of supplied workspace filenames found no matching helpers. Public searches on 11 November 2026 for the exact teaching filenames `part2_cat_est.R` and `part4_cat_price_vrt.R`, and combinations with `functions.R`, `LL.R`, Vaugirard and University of Twente, found no identifiable matching public course implementation. This is a search outcome, not a claim that the files do not exist elsewhere.
+The initial publication's public/workspace searches did not locate `functions.R` or `LL.R`. The user subsequently supplied these files and teaching parts 1-5. Their unmodified bytes and source hashes are preserved under [original/teaching/](../original/teaching/). These are actual recovered helpers, not inferred replacements.
 
-No inferred likelihood has been supplied. The estimation command computes available initialization outputs and then explains the missing dependency. If the actual helpers become available, place them in ignored `data/private_helpers/`, review their interfaces and attribution, then run the estimation command. The runner supplies `return.cat`, `N` and `delta.t` in a shared environment and expects an `LL` function suitable for BHHH; the unknown original interface may need adjustment. It does not claim those files will reproduce the reported estimates.
+`estimate_pjd()` now sources the original helpers from `original/teaching/` into a shared closure containing annual ACE `return.cat` and `delta.t=1`. `LL.R` sets `njumps=50` and returns the observation-wise normal/Poisson mixture required by BHHH. The other helper defines constant time functions. Pricing retains the report's fixed estimates and independent configuration.
 
-Appendix C defines `mut`, `sigmat` and `lambdat` locally and hard-codes the reported estimates. Its pricing workflow is therefore complete without A's helpers. The maintained code inlines the same constant functions as explicit configuration values.
+The teaching pricing kernels and both reconstructed Appendix C kernels were executed with the same ACE configuration over 30 seeded paths and agree with the maintained implementation. Part 5's repetition seed was also checked. The independent vectorized diagnostic implementation agrees on these path payoffs. The recovered part 2 confirms the likelihood/initialization workflow; report-specific epsilon, annual time step and `abs` inside the initial jump-SD formula are retained.
+
+[The teaching-file inventory](../original/teaching/README.md) documents the missing `est_param.txt` (a generated output), comment-only `set_param.R`, the part 4 commented-out r assignment, the part 1 final-step jump loop and optional platform/data packages. None blocks the maintained ACE workflows. The example workbook is not used or redistributed.
+
+[Reproduction and diagnostics](reproduction.md) are newly authored investigation code. They do not change archived teaching files, PDF reconstructions, report tables or default pricing mechanics.
 
 ## Engineering changes outside the archival transcriptions
 
@@ -49,4 +53,4 @@ Appendix C defines `mut`, `sigmat` and `lambdat` locally and hard-codes the repo
 
 The report explicitly credits `part2_cat_est.R` and `part4_cat_price_vrt.R`. Appendix C states that it replaced doMC with doParallel for Windows, hard-coded MLE estimates, defined time functions locally, supplied bond terms and added sensitivity loops. No author or license for those teaching scripts is identified in the supplied report. This repository does not invent one or grant a blanket license over them. See [RIGHTS.md](../RIGHTS.md).
 
-The report's original AI statement and references are preserved in the PDF; its AI statement is also reproduced in the README. Codex assisted with the subsequent transcription, software packaging and documentation, not with a claimed independent verification of the report's results.
+The report's original AI statement and references are preserved in the PDF; its AI statement is also reproduced in the README. Codex assisted with transcription, software packaging and documentation, followed by the separately requested reproduction and independent estimator investigation. Findings and limitations of that investigation are recorded separately from the report.
